@@ -166,6 +166,29 @@ lvim.builtin.treesitter.highlight.enable = true
 lvim.plugins = {
   { "lunarvim/colorschemes" },
   { "Mofiqul/vscode.nvim" },
+  {
+    "sindrets/diffview.nvim",
+    event = "BufRead",
+  },
+  {
+    "tpope/vim-fugitive",
+    cmd = {
+      "G",
+      "Git",
+      "Gdiffsplit",
+      "Gread",
+      "Gwrite",
+      "Ggrep",
+      "GMove",
+      "GDelete",
+      "GBrowse",
+      "GRemove",
+      "GRename",
+      "Glgrep",
+      "Gedit"
+    },
+    ft = {"fugitive"}
+  },
 --     {
 --       "folke/trouble.nvim",
 --       cmd = "TroubleToggle",
