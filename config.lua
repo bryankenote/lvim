@@ -189,6 +189,7 @@ lvim.plugins = {
     },
     ft = {"fugitive"}
   },
+  { "tpope/vim-sleuth" },
 --     {
 --       "folke/trouble.nvim",
 --       cmd = "TroubleToggle",
