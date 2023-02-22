@@ -10,7 +10,7 @@ an executable
 
 -- general
 lvim.log.level = "warn"
-lvim.format_on_save.enabled = false
+lvim.format_on_save.enabled = true
 lvim.colorscheme = "vscode"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -187,13 +187,13 @@ lvim.plugins = {
       "Glgrep",
       "Gedit"
     },
-    ft = {"fugitive"}
+    ft = { "fugitive" }
   },
   { "tpope/vim-sleuth" },
---     {
---       "folke/trouble.nvim",
---       cmd = "TroubleToggle",
---     },
+  --     {
+  --       "folke/trouble.nvim",
+  --       cmd = "TroubleToggle",
+  --     },
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
@@ -216,3 +216,4 @@ vim.opt.tabstop = 4
 
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
+lvim.builtin.nvimtree.setup.view.width = 70
