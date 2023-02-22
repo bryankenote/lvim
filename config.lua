@@ -222,3 +222,4 @@ vim.opt.tabstop = 4
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
 lvim.builtin.nvimtree.setup.view.width = 70
+lvim.builtin.nvimtree.setup.filters.dotfiles = false
