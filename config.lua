@@ -236,3 +236,28 @@ lvim.builtin.gitsigns.opts.current_line_blame = true
 
 lvim.builtin.nvimtree.setup.view.width = 70
 lvim.builtin.nvimtree.setup.filters.dotfiles = false
+
+lvim.builtin.telescope.pickers = {
+  find_files = {
+    layout_config = {
+      width = 0.95,
+    },
+  },
+  git_files = {
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+    },
+  },
+  grep_string = {
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+    },
+  },
+  live_grep = {
+    layout_config = {
+      width = 0.95,
+    },
+  },
+}
