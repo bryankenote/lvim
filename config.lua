@@ -19,14 +19,21 @@ lvim.colorscheme = "vscode"
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
-lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
-lvim.keys.normal_mode["<C-x>"] = ":bd<CR>"
+lvim.keys.normal_mode["]]"] = ":BufferLineCycleNext<CR>"
+lvim.keys.normal_mode["[["] = ":BufferLineCyclePrev<CR>"
+-- lvim.keys.normal_mode["[["] = "H"
+-- lvim.keys.normal_mode["]]"] = "L"
+-- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
+-- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
+
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
--- lvim.keys.normal_mode["<C-q>"] = ":q<cr>" -- or vim.keymap.set("n", "<C-q>", ":q<cr>" )
+lvim.keys.normal_mode["<C-q>"] = ":close<cr>"
+lvim.keys.normal_mode["<C-x>"] = ":bd<cr>"
+lvim.keys.normal_mode["<C-w>e"] = ":vsplit<CR>"
+lvim.keys.normal_mode["<C-w>o"] = ":split<CR>"
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
