@@ -172,6 +172,7 @@ formatters.setup {
 -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
+  -- { command = "editorconfig-checker", filetypes = { "c_sharp" } },
   { command = "eslint", filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" } },
   -- {
   --   -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
