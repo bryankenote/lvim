@@ -238,6 +238,7 @@ lvim.plugins = {
 -- Addtional Settings
 vim.opt.relativenumber = true
 vim.opt.tabstop = 4
+vim.opt.so = 16
 
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
