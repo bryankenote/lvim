@@ -269,3 +269,6 @@ lvim.builtin.telescope.pickers = {
     },
   },
 }
+
+-- Don't let lvim change the root directory
+lvim.builtin.project.manual_mode = true
