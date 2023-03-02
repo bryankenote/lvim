@@ -464,6 +464,9 @@ lvim.plugins = {
 vim.opt.relativenumber = true
 vim.opt.tabstop = 4
 vim.opt.so = 16
+vim.opt.list = true
+vim.opt.listchars:append("trail:·")
+vim.opt.listchars:append("lead:·")
 
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
