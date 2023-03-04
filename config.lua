@@ -281,27 +281,23 @@ lvim.plugins = {
   },
   { "tpope/vim-sleuth" },
   {
+    "kylechui/nvim-surround",
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+    config = function()
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
+  },
+  {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },
   { "Issafalcon/lsp-overloads.nvim" },
   {
-    "itchyny/vim-cursorword",
-    event = { "BufEnter", "BufNewFile" },
-    config = function()
-      vim.api.nvim_command("augroup user_plugin_cursorword")
-      vim.api.nvim_command("autocmd!")
-      vim.api.nvim_command("autocmd FileType NvimTree,lspsagafinder,dashboard,vista let b:cursorword = 0")
-      vim.api.nvim_command("autocmd WinEnter * if &diff || &pvw | let b:cursorword = 0 | endif")
-      vim.api.nvim_command("autocmd InsertEnter * let b:cursorword = 0")
-      vim.api.nvim_command("autocmd InsertLeave * let b:cursorword = 1")
-      vim.api.nvim_command("augroup END")
-    end
-  },
-  {
     "kevinhwang91/nvim-hlslens",
     config = function()
-      -- require('hlslens').setup()
+      require('hlslens').setup()
       require("scrollbar.handlers.search").setup()
 
       local kopts = { noremap = true, silent = true }
