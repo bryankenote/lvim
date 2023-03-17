@@ -472,6 +472,11 @@ lvim.builtin.gitsigns.opts.current_line_blame = true
 lvim.builtin.nvimtree.setup.view.width = 70
 lvim.builtin.nvimtree.setup.filters.dotfiles = false
 
+lvim.builtin.telescope.defaults = {
+  path_display = { "absolute" },
+  wrap_results = true,
+}
+
 lvim.builtin.telescope.pickers = {
   find_files = {
     layout_config = {
