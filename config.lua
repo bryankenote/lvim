@@ -441,6 +441,12 @@ lvim.plugins = {
     end
   },
   { "kdheepak/lazygit.nvim" },
+  {
+    "ggandor/leap.nvim",
+    config = function()
+      require('leap').add_default_mappings()
+    end
+  },
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
