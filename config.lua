@@ -510,5 +510,14 @@ lvim.builtin.telescope.pickers = {
   },
 }
 
+lvim.builtin.telescope.on_config_done = function()
+  ---@diagnostic disable-next-line: redundant-parameter
+  require("telescope").setup {
+    defaults = {
+      file_ignore_patterns = { "%.g%.cs$" }
+    }
+  }
+end
+
 -- Don't let lvim change the root directory
 lvim.builtin.project.manual_mode = true
