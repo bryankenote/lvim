@@ -82,17 +82,36 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 
-lvim.keys.normal_mode["<Tab>"] = ":BufferLineCycleNext<CR>"
-lvim.keys.normal_mode["<S-Tab>"] = ":BufferLineCyclePrev<CR>"
+lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
+lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
-lvim.keys.normal_mode["<C-q>"] = ":close<cr>"
-lvim.keys.normal_mode["<C-x>"] = ":bd<cr>"
-lvim.keys.normal_mode["<C-w>e"] = ":vsplit<CR>"
-lvim.keys.normal_mode["<C-w>o"] = ":split<CR>"
+-- lvim.keys.normal_mode["<C-q>"] = ":close<cr>"
+-- lvim.keys.normal_mode["<C-x>"] = ":bd<cr>"
+-- lvim.keys.normal_mode["<C-w>e"] = ":vsplit<CR>"
+-- lvim.keys.normal_mode["<C-w>o"] = ":split<CR>"
 
+lvim.builtin.which_key.mappings["D"] = {
+  name = "Diffview",
+  o = { ":DiffviewOpen<CR>", "Open" },
+  c = { ":DiffviewClose<CR>", "Close" }
+}
+
+lvim.builtin.which_key.mappings["v"] = {
+  name = "Window",
+  e = { ":vsplit<CR>", "Vertical" },
+  o = { ":split<CR>", "Horizontal" }
+}
+
+lvim.builtin.which_key.mappings["c"] = {
+  name = "Close",
+  b = { ":bd<CR>", "Buffer" },
+  v = { ":close<CR>", "Window" },
+  a = { ":qa<CR>", "all" },
+  w = { ":wqa<CR>", "save all" }
+}
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 -- local _, actions = pcall(require, "telescope.actions")
