@@ -99,11 +99,13 @@ lvim.builtin.which_key.mappings["D"] = {
   c = { ":DiffviewClose<CR>", "Close" }
 }
 
-lvim.builtin.which_key.mappings["v"] = {
-  name = "Window",
-  e = { ":vsplit<CR>", "Vertical" },
-  o = { ":split<CR>", "Horizontal" }
-}
+lvim.keys.normal_mode["<C-w>e"] = ":vsplit<CR>"
+lvim.keys.normal_mode["<C-w>o"] = ":split<CR>"
+-- lvim.builtin.which_key.mappings["v"] = {
+--   name = "Window",
+--   e = { ":vsplit<CR>", "Vertical" },
+--   o = { ":split<CR>", "Horizontal" }
+-- }
 
 lvim.builtin.which_key.mappings["c"] = {
   name = "Close",
@@ -463,15 +465,51 @@ lvim.plugins = {
   {
     "ggandor/leap.nvim",
     config = function()
-      -- require('leap').add_default_mappings()
+      require('leap').add_default_mappings()
     end
   },
+  {
+    'ThePrimeagen/harpoon',
+    config = function()
+      require("harpoon").setup({
+        global_settings = {
+          -- sets the marks upon calling `toggle` on the ui, instead of require `:w`.
+          save_on_toggle = false,
+          -- saves the harpoon file upon every change. disabling is unrecommended.
+          save_on_change = true,
+          -- sets harpoon to run the command immediately as it's passed to the terminal when calling `sendCommand`.
+          enter_on_sendcmd = false,
+          -- closes any tmux windows harpoon that harpoon creates when you close Neovim.
+          tmux_autoclose_windows = false,
+          -- filetypes that you want to prevent from adding to the harpoon list menu.
+          excluded_filetypes = { "harpoon" },
+          -- set marks specific to each git branch inside git repository
+          mark_branch = false,
+        }
+      })
+    end
+  }
 }
 
-lvim.builtin.which_key.mappings["f"] = { "<Plug>(leap-forward-to)", "Leap forward" }
-lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backward" }
-lvim.builtin.which_key.vmappings["x"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
-lvim.builtin.which_key.vmappings["X"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
+lvim.builtin.which_key.mappings["h"] = {
+  name = "Harpoon",
+  l = { "<CMD>lua require(\"harpoon.ui\").toggle_quick_menu()<CR>", "List" },
+  m = { "<CMD>lua require(\"harpoon.mark\").add_file()<CR>", "Mark" },
+  a = { "<CMD>lua require(\"harpoon.ui\").nav_file(1)<CR>", "File 1" },
+  s = { "<CMD>lua require(\"harpoon.ui\").nav_file(2)<CR>", "File 2" },
+  d = { "<CMD>lua require(\"harpoon.ui\").nav_file(3)<CR>", "File 3" },
+  f = { "<CMD>lua require(\"harpoon.ui\").nav_file(4)<CR>", "File 4" },
+  g = { "<CMD>lua require(\"harpoon.ui\").nav_file(5)<CR>", "File 5" }
+}
+
+-- https://github.com/nvim-telescope/telescope.nvim/issues/758
+-- lvim.builtin.which_key.mappings["sb"] = { "<CMD>Telescope", "Branch changes" }
+lvim.builtin.which_key.mappings["sc"] = { "<CMD>Telescope git_status<CR>", "Changes (uncommitted)" }
+
+-- lvim.builtin.which_key.mappings["f"] = { "<Plug>(leap-forward-to)", "Leap forward" }
+-- lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backward" }
+-- lvim.builtin.which_key.vmappings["x"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
+-- lvim.builtin.which_key.vmappings["X"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   pattern = { "*.json", "*.jsonc" },
@@ -508,23 +546,27 @@ lvim.builtin.telescope.pickers = {
   find_files = {
     layout_config = {
       width = 0.95,
+      preview_width = 0.5,
     },
   },
   git_files = {
     layout_config = {
       width = 0.95,
       height = 0.95,
+      preview_width = 0.5,
     },
   },
   grep_string = {
     layout_config = {
       width = 0.95,
       height = 0.95,
+      preview_width = 0.5,
     },
   },
   live_grep = {
     layout_config = {
       width = 0.95,
+      preview_width = 0.5,
     },
   },
 }
