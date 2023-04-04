@@ -110,10 +110,13 @@ lvim.keys.normal_mode["<C-w>o"] = ":split<CR>"
 lvim.builtin.which_key.mappings["c"] = {
   name = "Close",
   b = { ":bd<CR>", "Buffer" },
-  v = { ":close<CR>", "Window" },
-  a = { ":qa<CR>", "all" },
-  w = { ":wqa<CR>", "save all" }
+  w = { ":close<CR>", "Window" },
+  a = { ":qa<CR>", "all" }
 }
+
+lvim.builtin.which_key.mappings["bs"] = { "<cmd>mksession! ~/.nvim/sessions/default.vim<cr>", "Save session" }
+lvim.builtin.which_key.mappings["br"] = { "<cmd>source ~/.nvim/sessions/default.vim<cr>", "Restore session" }
+
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 -- local _, actions = pcall(require, "telescope.actions")
@@ -162,6 +165,8 @@ lvim.builtin.which_key.mappings["t"] = {
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+lvim.builtin.terminal.direction = 'horizontal'
+lvim.builtin.terminal.size = 50
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
@@ -252,7 +257,8 @@ formatters.setup {
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   -- { command = "editorconfig-checker", filetypes = { "c_sharp" } },
-  { exe = "eslint_d", filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" } },
+  { command = "editorconfig-checker", filetypes = { "c_sharp" } },
+  { exe = "eslint_d",                 filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" } },
   -- {
   --   -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
   --   command = "shellcheck",
@@ -464,13 +470,14 @@ lvim.plugins = {
   { "kdheepak/lazygit.nvim" },
   {
     "ggandor/leap.nvim",
-    config = function()
-      require('leap').add_default_mappings()
-    end
+    -- config = function()
+    --   require('leap').add_default_mappings()
+    -- end
   },
   {
     'ThePrimeagen/harpoon',
     config = function()
+      require("telescope").load_extension('harpoon')
       require("harpoon").setup({
         global_settings = {
           -- sets the marks upon calling `toggle` on the ui, instead of require `:w`.
@@ -493,23 +500,19 @@ lvim.plugins = {
 
 lvim.builtin.which_key.mappings["h"] = {
   name = "Harpoon",
-  l = { "<CMD>lua require(\"harpoon.ui\").toggle_quick_menu()<CR>", "List" },
-  m = { "<CMD>lua require(\"harpoon.mark\").add_file()<CR>", "Mark" },
-  a = { "<CMD>lua require(\"harpoon.ui\").nav_file(1)<CR>", "File 1" },
-  s = { "<CMD>lua require(\"harpoon.ui\").nav_file(2)<CR>", "File 2" },
-  d = { "<CMD>lua require(\"harpoon.ui\").nav_file(3)<CR>", "File 3" },
-  f = { "<CMD>lua require(\"harpoon.ui\").nav_file(4)<CR>", "File 4" },
-  g = { "<CMD>lua require(\"harpoon.ui\").nav_file(5)<CR>", "File 5" }
+  -- l = { "<CMD>lua require(\"harpoon.ui\").toggle_quick_menu()<CR>", "List" },
+  l = { "<CMD>Telescope harpoon marks<CR>", "List" },
+  m = { "<CMD>lua require(\"harpoon.mark\").add_file()<CR>", "Mark" }
 }
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/758
 -- lvim.builtin.which_key.mappings["sb"] = { "<CMD>Telescope", "Branch changes" }
 lvim.builtin.which_key.mappings["sc"] = { "<CMD>Telescope git_status<CR>", "Changes (uncommitted)" }
 
--- lvim.builtin.which_key.mappings["f"] = { "<Plug>(leap-forward-to)", "Leap forward" }
--- lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backward" }
--- lvim.builtin.which_key.vmappings["x"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
--- lvim.builtin.which_key.vmappings["X"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
+lvim.builtin.which_key.mappings["f"] = { "<Plug>(leap-forward-to)", "Leap forward" }
+lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backward" }
+lvim.builtin.which_key.vmappings["x"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
+lvim.builtin.which_key.vmappings["X"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   pattern = { "*.json", "*.jsonc" },
@@ -537,8 +540,73 @@ lvim.builtin.gitsigns.opts.current_line_blame = true
 lvim.builtin.nvimtree.setup.view.width = 70
 lvim.builtin.nvimtree.setup.filters.dotfiles = false
 
+---@diagnostic disable-next-line: unused-local
+local function custom_path_display(opts, path)
+  local cwd = vim.loop.cwd()
+
+  ---@diagnostic disable-next-line: need-check-nil
+  if not cwd:match("AcademicServices") then
+    return path
+  end
+
+  local segments = vim.split(path, "/", {})
+
+  if #segments < 2 then
+    return path
+  end
+
+  local segment = segments[2]
+
+  local display_name = ""
+  if segment ~= nil then
+    if string.find(segment, "Faithlife.AcademicDesk.Client") then
+      display_name = "[Desk.C]"
+    elseif string.find(segment, "Faithlife.AcademicDesk.Server") then
+      display_name = "[Desk.S]"
+    elseif string.find(segment, "Faithlife.AcademicPortal.Client") then
+      display_name = "[Portal.C]"
+    elseif string.find(segment, "Faithlife.AcademicPortal.Server") then
+      display_name = "[Portal.S]"
+    elseif string.find(segment, "Faithlife.AcademicServices.AcademicApi.v1.WebApi") then
+      display_name = "[WebApi]"
+    elseif string.find(segment, "Faithlife.AcademicServices.Subscriber") then
+      display_name = "[Subscriber]"
+    elseif string.find(segment, "Faithlife.AcademicServices.Services") then
+      display_name = "[Services]"
+    elseif string.find(segment, "Faithlife.AcademicServices.Scheduler") then
+      display_name = "[Scheduler]"
+    elseif string.find(segment, "Faithlife.AcademicServices.JobConsole") then
+      display_name = "[JobConsole]"
+    elseif string.find(segment, "Faithlife.AcademicServices.Data.Entities") then
+      display_name = "[Entities]"
+    elseif string.find(segment, "Faithlife.AcademicServices.Data") then
+      display_name = "[Data]"
+    elseif string.find(segment, "Faithlife.AcademicServices.IntegrationTests") then
+      display_name = "[IntegrationTests]"
+    elseif string.find(segment, "Faithlife.AcademicServices.AcademicApi.Tests") then
+      display_name = "[AcademicApi.Tests]"
+    elseif string.find(segment, "Faithlife.AcademicServices.LtiProvider.v1.Web.Tests") then
+      display_name = "[LtiProvider.Tests]"
+    end
+  end
+
+  if display_name == "" or segment == nil then
+    return path
+  end
+
+  -- Get the remaining path after the segment
+  local index = string.find(path, segment) + #segment + 1
+  local sub_path = string.sub(path, index)
+
+  -- Get path past "/src" if possible
+  sub_path = vim.fn.substitute(sub_path, "^src", "", "")
+
+  -- Return the formatted path
+  return display_name .. " " .. sub_path
+end
+
 lvim.builtin.telescope.defaults = {
-  path_display = { "absolute" },
+  path_display = custom_path_display,
   wrap_results = true,
 }
 
