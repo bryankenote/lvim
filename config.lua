@@ -110,10 +110,13 @@ lvim.keys.normal_mode["<C-w>o"] = ":split<CR>"
 lvim.builtin.which_key.mappings["c"] = {
   name = "Close",
   b = { ":bd<CR>", "Buffer" },
-  v = { ":close<CR>", "Window" },
-  a = { ":qa<CR>", "all" },
-  w = { ":wqa<CR>", "save all" }
+  w = { ":close<CR>", "Window" },
+  a = { ":qa<CR>", "all" }
 }
+
+lvim.builtin.which_key.mappings["bs"] = { "<cmd>mksession! ~/.nvim/sessions/default.vim<cr>", "Save session" }
+lvim.builtin.which_key.mappings["br"] = { "<cmd>source ~/.nvim/sessions/default.vim<cr>", "Restore session" }
+
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 -- local _, actions = pcall(require, "telescope.actions")
@@ -162,6 +165,8 @@ lvim.builtin.which_key.mappings["t"] = {
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+lvim.builtin.terminal.direction = 'horizontal'
+lvim.builtin.terminal.size = 50
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
@@ -464,13 +469,14 @@ lvim.plugins = {
   { "kdheepak/lazygit.nvim" },
   {
     "ggandor/leap.nvim",
-    config = function()
-      require('leap').add_default_mappings()
-    end
+    -- config = function()
+    --   require('leap').add_default_mappings()
+    -- end
   },
   {
     'ThePrimeagen/harpoon',
     config = function()
+      require("telescope").load_extension('harpoon')
       require("harpoon").setup({
         global_settings = {
           -- sets the marks upon calling `toggle` on the ui, instead of require `:w`.
@@ -493,23 +499,19 @@ lvim.plugins = {
 
 lvim.builtin.which_key.mappings["h"] = {
   name = "Harpoon",
-  l = { "<CMD>lua require(\"harpoon.ui\").toggle_quick_menu()<CR>", "List" },
-  m = { "<CMD>lua require(\"harpoon.mark\").add_file()<CR>", "Mark" },
-  a = { "<CMD>lua require(\"harpoon.ui\").nav_file(1)<CR>", "File 1" },
-  s = { "<CMD>lua require(\"harpoon.ui\").nav_file(2)<CR>", "File 2" },
-  d = { "<CMD>lua require(\"harpoon.ui\").nav_file(3)<CR>", "File 3" },
-  f = { "<CMD>lua require(\"harpoon.ui\").nav_file(4)<CR>", "File 4" },
-  g = { "<CMD>lua require(\"harpoon.ui\").nav_file(5)<CR>", "File 5" }
+  -- l = { "<CMD>lua require(\"harpoon.ui\").toggle_quick_menu()<CR>", "List" },
+  l = { "<CMD>Telescope harpoon marks<CR>", "List" },
+  m = { "<CMD>lua require(\"harpoon.mark\").add_file()<CR>", "Mark" }
 }
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/758
 -- lvim.builtin.which_key.mappings["sb"] = { "<CMD>Telescope", "Branch changes" }
 lvim.builtin.which_key.mappings["sc"] = { "<CMD>Telescope git_status<CR>", "Changes (uncommitted)" }
 
--- lvim.builtin.which_key.mappings["f"] = { "<Plug>(leap-forward-to)", "Leap forward" }
--- lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backward" }
--- lvim.builtin.which_key.vmappings["x"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
--- lvim.builtin.which_key.vmappings["X"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
+lvim.builtin.which_key.mappings["f"] = { "<Plug>(leap-forward-to)", "Leap forward" }
+lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backward" }
+lvim.builtin.which_key.vmappings["x"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
+lvim.builtin.which_key.vmappings["X"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   pattern = { "*.json", "*.jsonc" },
@@ -552,14 +554,12 @@ lvim.builtin.telescope.pickers = {
   git_files = {
     layout_config = {
       width = 0.95,
-      height = 0.95,
       preview_width = 0.5,
     },
   },
   grep_string = {
     layout_config = {
       width = 0.95,
-      height = 0.95,
       preview_width = 0.5,
     },
   },
