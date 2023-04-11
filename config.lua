@@ -17,7 +17,7 @@ vim.opt.listchars:append("lead:·")
 lvim.log.level = "info"
 lvim.format_on_save = {
 	enabled = true,
-	pattern = "*.lua",
+	pattern = "*.lua,*.tsx,*.ts",
 	timeout = 1000,
 }
 -- to disable icons and use a minimalist setup, uncomment the following
