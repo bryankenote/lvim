@@ -98,42 +98,46 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.telescope.defaults = {
 	path_display = { "absolute" },
 	wrap_results = true,
+	layout_strategy = "horizontal",
 	layout_config = {
 		prompt_position = "top",
+		width = 0.95,
+		height = 0.90,
+		preview_width = 0.5,
 	},
 	sorting_strategy = "ascending",
 }
 
-lvim.builtin.telescope.pickers = {
-	find_files = {
-		layout_config = {
-			width = 0.95,
-			preview_width = 0.5,
-		},
-	},
-	git_files = {
-		layout_config = {
-			width = 0.95,
-			preview_width = 0.5,
-		},
-	},
-	git_commits = {
-		width = 0.95,
-		preview_width = 0.5,
-	},
-	grep_string = {
-		layout_config = {
-			width = 0.95,
-			preview_width = 0.5,
-		},
-	},
-	live_grep = {
-		layout_config = {
-			width = 0.95,
-			preview_width = 0.5,
-		},
-	},
-}
+-- lvim.builtin.telescope.pickers = {
+-- 	find_files = {
+-- 		layout_config = {
+-- 			width = 0.95,
+-- 			preview_width = 0.5,
+-- 		},
+-- 	},
+-- 	git_files = {
+-- 		layout_config = {
+-- 			width = 0.95,
+-- 			preview_width = 0.5,
+-- 		},
+-- 	},
+-- 	git_commits = {
+-- 		width = 0.95,
+-- 		preview_width = 0.5,
+-- 	},
+-- 	grep_string = {
+-- 		layout_config = {
+-- 			width = 0.95,
+-- 			preview_width = 0.5,
+-- 		},
+-- 	},
+-- 	live_grep = {
+-- 		layout_config = {
+-- 			width = 0.95,
+-- 			preview_width = 0.5,
+-- 		},
+-- 	},
+-- }
 
 lvim.builtin.telescope.on_config_done = function()
 	---@diagnostic disable-next-line: redundant-parameter
