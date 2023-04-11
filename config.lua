@@ -83,7 +83,7 @@ lvim.builtin.which_key.vmappings["F"] = { "<Plug>(leap-backward-till)", "Move se
 -- -- Change theme settings
 lvim.colorscheme = "vscode"
 lvim.builtin.lualine.options.theme = "vscode"
-lvim.builtin.lualine.style = "default"
+-- lvim.builtin.lualine.style = "default"
 
 lvim.builtin.gitsigns.opts.current_line_blame = true
 lvim.builtin.nvimtree.setup.view.width = 70
