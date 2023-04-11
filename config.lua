@@ -73,8 +73,8 @@ lvim.builtin.which_key.mappings["sc"] = { "<CMD>Telescope git_status<CR>", "Chan
 
 lvim.builtin.which_key.mappings["f"] = { "<Plug>(leap-forward-to)", "Leap forward" }
 lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backward" }
-lvim.builtin.which_key.vmappings["x"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
-lvim.builtin.which_key.vmappings["X"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
+lvim.builtin.which_key.vmappings["f"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
+lvim.builtin.which_key.vmappings["F"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
 
 -- -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
