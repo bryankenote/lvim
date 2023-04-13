@@ -98,6 +98,8 @@ lvim.builtin.terminal.size = 40
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
+vim.opt.diffopt:append({ "iwhite" })
+
 lvim.builtin.telescope.defaults = {
 	path_display = { "absolute" },
 	wrap_results = true,
