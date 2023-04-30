@@ -2,7 +2,6 @@
  THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
  `lvim` is the global options object
 ]]
-
 -- vim options
 vim.opt.relativenumber = true
 vim.opt.autoindent = true
@@ -97,10 +96,36 @@ lvim.builtin.lualine.options.theme = "vscode"
 -- lvim.builtin.lualine.style = "default"
 
 lvim.builtin.gitsigns.opts.current_line_blame = true
-lvim.builtin.nvimtree.setup.view.width = 70
 lvim.builtin.nvimtree.setup.filters.dotfiles = false
-lvim.builtin.nvimtree.setup.view.side = "right"
-lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+
+local NVIMTREE_HEIGHT_RATIO = 0.8 -- You can change this
+local NVIMTREE_WIDTH_RATIO = 0.5  -- You can change this too
+lvim.builtin.nvimtree.setup.view.relativenumber = true
+lvim.builtin.nvimtree.setup.view.width = function()
+	return math.floor(vim.opt.columns:get() * NVIMTREE_WIDTH_RATIO)
+end
+lvim.builtin.nvimtree.setup.view.float = {
+	enable = true,
+	open_win_config = function()
+		local screen_w = vim.opt.columns:get()
+		local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+		local window_w = screen_w * NVIMTREE_WIDTH_RATIO
+		local window_h = screen_h * NVIMTREE_HEIGHT_RATIO
+		local window_w_int = math.floor(window_w)
+		local window_h_int = math.floor(window_h)
+		local center_x = (screen_w - window_w) / 2
+		local center_y = ((vim.opt.lines:get() - window_h) / 2)
+			- vim.opt.cmdheight:get()
+		return {
+			border = "rounded",
+			relative = "editor",
+			row = center_y,
+			col = center_x,
+			width = window_w_int,
+			height = window_h_int,
+		}
+	end,
+}
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
