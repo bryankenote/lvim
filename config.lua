@@ -61,13 +61,6 @@ lvim.builtin.which_key.mappings["t"] = {
 	r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
 }
 
-lvim.builtin.which_key.mappings["h"] = {
-	name = "Harpoon",
-	-- l = { "<CMD>lua require(\"harpoon.ui\").toggle_quick_menu()<CR>", "List" },
-	l = { "<CMD>Telescope harpoon marks<CR>", "List" },
-	m = { '<CMD>lua require("harpoon.mark").add_file()<CR>', "Mark" },
-}
-
 -- https://github.com/nvim-telescope/telescope.nvim/issues/758
 -- lvim.builtin.which_key.mappings["sb"] = { "<CMD>Telescope", "Branch changes" }
 lvim.builtin.which_key.mappings["sc"] = { "<CMD>Telescope git_status<CR>", "Changes (uncommitted)" }
@@ -135,6 +128,9 @@ lvim.builtin.terminal.size = 40
 lvim.builtin.terminal.start_in_insert = true
 
 vim.opt.diffopt:append({ "iwhite" })
+
+vim.opt.foldmethod = "manual"
+vim.opt.foldenable = true
 
 ---@diagnostic disable-next-line: unused-local
 local function custom_path_display(opts, path)
@@ -213,9 +209,6 @@ lvim.builtin.telescope.defaults = {
 	},
 	sorting_strategy = "ascending",
 }
-
-vim.opt.foldmethod = "manual"
-vim.opt.foldenable = true
 
 -- lvim.builtin.telescope.pickers = {
 -- 	find_files = {
@@ -343,21 +336,6 @@ lvim.plugins = {
 	{
 		"LukasPietzschmann/telescope-tabs",
 		dependencies = { "nvim-telescope/telescope.nvim" },
-	},
-	{
-		"zbirenbaum/neodim",
-		event = "LspAttach",
-		branch = v2,
-		config = function()
-			require("neodim").setup({
-				refresh_delay = 75, -- time in ms to wait after typing before refresh diagnostics
-				alpha = 0.75,
-				blend_color = "#000000",
-				hide = { underline = true, virtual_text = true, signs = true },
-				priority = 100, -- priority of dim highlights (increasing may interfere with semantic tokens!!)
-				disable = {}, -- table of filetypes to disable neodim
-			})
-		end,
 	},
 	{
 		"sindrets/diffview.nvim",
@@ -547,57 +525,7 @@ lvim.plugins = {
 			}, { prefix = "<leader>" })
 		end,
 	},
-	{ "kdheepak/lazygit.nvim" },
-	{
-		"ggandor/leap.nvim",
-		-- config = function()
-		--   require('leap').add_default_mappings()
-		-- end
-	},
-	{
-		"ThePrimeagen/harpoon",
-		config = function()
-			require("telescope").load_extension("harpoon")
-			require("harpoon").setup({
-				global_settings = {
-					-- sets the marks upon calling `toggle` on the ui, instead of require `:w`.
-					save_on_toggle = false,
-					-- saves the harpoon file upon every change. disabling is unrecommended.
-					save_on_change = true,
-					-- sets harpoon to run the command immediately as it's passed to the terminal when calling `sendCommand`.
-					enter_on_sendcmd = false,
-					-- closes any tmux windows harpoon that harpoon creates when you close Neovim.
-					tmux_autoclose_windows = false,
-					-- filetypes that you want to prevent from adding to the harpoon list menu.
-					excluded_filetypes = { "harpoon" },
-					-- set marks specific to each git branch inside git repository
-					mark_branch = false,
-				},
-			})
-		end,
-	},
-	-- {
-	-- 	"glepnir/lspsaga.nvim",
-	-- 	event = "LspAttach",
-	-- 	config = function()
-	-- 		require("lspsaga").setup({})
-	-- 	end,
-	-- 	dependencies = {
-	-- 		{ "nvim-tree/nvim-web-devicons" },
-	-- 		--Please make sure you install markdown and markdown_inline parser
-	-- 		{ "nvim-treesitter/nvim-treesitter" },
-	-- 	},
-	-- },
-	-- {
-	-- 	"folke/persistence.nvim",
-	-- 	event = "BufReadPre", -- this will only start session saving when an actual file was opened
-	-- 	module = "persistence",
-	-- 	config = function()
-	-- 		require("persistence").setup()
-	-- 	end,
-	-- },
-	-- https://github.com/alexghergh/nvim-tmux-navigation
-	-- { "alexghergh/nvim-tmux-navigation" },
+	{ "ggandor/leap.nvim" },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
