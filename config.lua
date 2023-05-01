@@ -70,11 +70,10 @@ lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backw
 lvim.builtin.which_key.vmappings["f"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
 lvim.builtin.which_key.vmappings["F"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
 
-lvim.builtin.which_key.mappings["bf"] = { "<cmd>Telescope buffers<cr>", "Find" }
+lvim.builtin.which_key.mappings["bf"] = { "<cmd>Telescope buffers initial_mode=normal<cr>", "Find" }
+lvim.builtin.which_key.mappings["sT"] = { "<cmd>Telescope telescope-tabs list_tabs initial_mode=normal<cr>", "Tabs" }
 
 lvim.builtin.which_key.mappings["r"] = { ":%s/<c-r><c-w>/<c-r>0/g<cr>", "Replace" }
-
-lvim.builtin.which_key.mappings["sT"] = { "<cmd>Telescope telescope-tabs list_tabs<cr>", "Tabs" }
 
 -- lvim.keys.normal_mode["K"] = "<cmd>lua require('lspsaga.hover').render_hover_doc()<cr>"
 -- lvim.builtin.which_key.mappings["ld"] =
