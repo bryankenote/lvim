@@ -84,6 +84,12 @@ lvim.builtin.which_key.mappings["r"] = { ":%s/<c-r><c-w>/<c-r>0/g<cr>", "Replace
 
 lvim.builtin.which_key.mappings["z"] = { "<cmd>ZenMode<cr>", "Zen Mode" }
 
+lvim.builtin.which_key.mappings["m"] = {
+    name = "Marks",
+    l = { "<CMD>Track<CR>", "List" },
+    m = { "<CMD>TrackMark<CR>", "Mark" },
+}
+
 -- -- Change theme settings
 lvim.colorscheme = "vscode"
 lvim.builtin.lualine.options.theme = "vscode"
@@ -617,7 +623,51 @@ lvim.plugins = {
         "nvim-treesitter/nvim-treesitter-textobjects",
         dependencies = { "nvim-treesitter/nvim-treesitter" }
     },
-    { "github/copilot.vim" },
+    {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        event = "InsertEnter",
+        config = function()
+            require("copilot").setup({
+                floating_window = true,
+                suggestion = {
+                    keymap = {
+                        accept = "<c-l>",
+                        next = "<c-j>",
+                        prev = "<c-k>",
+                        dismiss = "<c-h>",
+                    },
+                },
+            })
+        end,
+    },
+    {
+        "zbirenbaum/copilot-cmp",
+        after = { "copilot.lua" },
+        config = function()
+            require("copilot_cmp").setup()
+        end,
+    },
+    {
+        "dharmx/track.nvim",
+        config = function()
+            require("track").setup({
+                pickers = {
+                    views = {
+                        prompt_prefix = "> ",
+                        wrap_results = true,
+                        layout_strategy = "horizontal",
+                        layout_config = {
+                            prompt_position = "top",
+                            width = 0.95,
+                            height = 0.90,
+                            preview_width = 0.5,
+                        },
+                    },
+                }
+            })
+        end
+    }
     -- {
     -- 	"karb94/neoscroll.nvim",
     -- 	config = function()
