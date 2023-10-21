@@ -35,13 +35,10 @@ lvim.keys.normal_mode["<C-w>o"] = ":split<CR>"
 lvim.keys.normal_mode["<C-d>"] = "<C-d>M"
 lvim.keys.normal_mode["<C-u>"] = "<C-u>M"
 
-vim.cmd [[imap <silent><script><expr> <C-a> copilot#Accept("\<CR>")]]
-vim.g.copilot_no_tab_map = true
-
 lvim.builtin.which_key.mappings["bs"] = { "<cmd>mksession! ~/.nvim/sessions/default.vim<cr>", "Save session" }
 lvim.builtin.which_key.mappings["br"] = { "<cmd>source ~/.nvim/sessions/default.vim<cr>", "Restore session" }
 
-lvim.builtin.which_key.mappings["x"] = {
+lvim.builtin.which_key.mappings["c"] = {
     name = "Close",
     b = { ":bd<CR>", "Buffer" },
     w = { ":close<CR>", "Window" },
@@ -70,10 +67,10 @@ lvim.builtin.which_key.mappings["l<"] = { "<cmd>LspStop<cr>", "Disable lsp" }
 -- lvim.builtin.which_key.mappings["sb"] = { "<CMD>Telescope", "Branch changes" }
 lvim.builtin.which_key.mappings["sc"] = { "<CMD>Telescope git_status<CR>", "Changes (uncommitted)" }
 
-lvim.builtin.which_key.mappings["f"] = { "<Plug>(leap-forward-to)", "Leap forward" }
-lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backward" }
-lvim.builtin.which_key.vmappings["f"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
-lvim.builtin.which_key.vmappings["F"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
+-- lvim.builtin.which_key.mappings["f"] = { "<Plug>(leap-forward-to)", "Leap forward" }
+-- lvim.builtin.which_key.mappings["F"] = { "<Plug>(leap-backward-to)", "Leap backward" }
+-- lvim.builtin.which_key.vmappings["f"] = { "<Plug>(leap-forward-till)", "Move selection forward" }
+-- lvim.builtin.which_key.vmappings["F"] = { "<Plug>(leap-backward-till)", "Move selection backward" }
 
 lvim.builtin.which_key.mappings["bf"] = { "<cmd>Telescope buffers initial_mode=insert previewer=true<cr>", "Find" }
 -- lvim.builtin.which_key.mappings["bo"] = { "<cmd>Telescope buffers initial_mode=insert previewer=true<cr>", "Find" }
@@ -133,9 +130,10 @@ lvim.builtin.nvimtree.setup.view.float = {
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
-lvim.builtin.terminal.direction = "horizontal"
+lvim.builtin.terminal.direction = "float"
 lvim.builtin.terminal.size = 40
 lvim.builtin.terminal.start_in_insert = true
+lvim.builtin.terminal.open_mapping = "<F2>"
 
 vim.opt.diffopt:append({ "iwhite" })
 
@@ -146,7 +144,7 @@ vim.opt.foldenable = true
 local function custom_path_display(opts, path)
     local cwd = vim.loop.cwd()
 
-    if cwd == nil or not cwd:match("AcademicServices") or cwd:match("LogosWebApp") then
+    if cwd == nil or not cwd:match("AcademicServices") or not cwd:match("LogosWebApp") then
         return path
     end
 
@@ -171,6 +169,7 @@ local function custom_path_display(opts, path)
             end
         end
     elseif cwd:match("AcademicServices") then
+        -- if cwd:match("AcademicServices") then
         if #segments < 2 then
             return path
         end
@@ -226,7 +225,7 @@ local function custom_path_display(opts, path)
 end
 
 lvim.builtin.telescope.defaults = {
-    path_display = custom_path_display,
+    -- path_display = custom_path_display,
     wrap_results = true,
     layout_strategy = "horizontal",
     layout_config = {
@@ -238,8 +237,19 @@ lvim.builtin.telescope.defaults = {
     sorting_strategy = "ascending",
 }
 
+lvim.builtin.telescope.pickers.lsp_references = {
+    show_line = false,
+}
+lvim.builtin.telescope.pickers.lsp_definitions = {
+    show_line = false,
+}
+lvim.builtin.telescope.pickers.lsp_implementations = {
+    show_line = false,
+}
 vim.lsp.handlers["textDocument/references"] = require("telescope.builtin").lsp_references
 vim.lsp.handlers["textDocument/definition"] = require("telescope.builtin").lsp_definitions
+vim.lsp.handlers["textDocument/implementation"] = require("telescope.builtin").lsp_implementations
+-- vim.lsp.handlers["textDocument/codeAction"] = require('telescope.builtin').lsp_code_actions
 -- vim.lsp.handlers["textDocument/definition"] = require("telescope.builtin").lsp_type_definitions
 
 -- lvim.builtin.telescope.pickers = {
@@ -564,7 +574,7 @@ lvim.plugins = {
     --         }, { prefix = "<leader>" })
     --     end,
     -- },
-    { "ggandor/leap.nvim" },
+    -- { "ggandor/leap.nvim" },
     {
         "folke/zen-mode.nvim",
         config = function()
@@ -621,7 +631,24 @@ lvim.plugins = {
     },
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
-        dependencies = { "nvim-treesitter/nvim-treesitter" }
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        config = function()
+            require("nvim-treesitter.configs").setup({
+                textobjects = {
+                    select = {
+                        enable = true,
+                        lookahead = true,
+                        keymaps = {
+                            ["af"] = "@function.outer",
+                            ["if"] = "@function.inner",
+                            ["ac"] = "@class.outer",
+                            ["ic"] = "@class.inner",
+                        },
+                    },
+                    include_surrounding_whitespace = true,
+                }
+            })
+        end
     },
     {
         "zbirenbaum/copilot.lua",
@@ -629,21 +656,23 @@ lvim.plugins = {
         event = "InsertEnter",
         config = function()
             require("copilot").setup({
-                floating_window = true,
-                suggestion = {
-                    keymap = {
-                        accept = "<c-l>",
-                        next = "<c-j>",
-                        prev = "<c-k>",
-                        dismiss = "<c-h>",
-                    },
-                },
+                -- suggestion = {
+                --     enable = true,
+                --     auto_trigger = true,
+                --     keymap = {
+                --         accept = "<c-l>",
+                --         next = "<c-j>",
+                --         prev = "<c-k>",
+                --         dismiss = "<c-h>",
+                --     },
+                -- },
+                suggestion = { enabled = false },
+                panel = { enabled = false },
             })
         end,
     },
     {
         "zbirenbaum/copilot-cmp",
-        after = { "copilot.lua" },
         config = function()
             require("copilot_cmp").setup()
         end,
@@ -654,6 +683,10 @@ lvim.plugins = {
             require("track").setup({
                 pickers = {
                     views = {
+                        path_display = {
+                            absolute = false,
+                            shorten = 100,
+                        },
                         prompt_prefix = "> ",
                         wrap_results = true,
                         layout_strategy = "horizontal",
@@ -667,7 +700,36 @@ lvim.plugins = {
                 }
             })
         end
-    }
+    },
+    {
+        "kwkarlwang/bufjump.nvim",
+        config = function()
+            require("bufjump").setup({
+                forward = "<C-n>",
+                backward = "<C-p>",
+                on_success = nil
+            })
+        end
+    },
+    -- {
+    --     "nvim-treesitter/nvim-treesitter-context",
+    --     config = function()
+    --         require 'treesitter-context'.setup {
+    --             enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+    --             max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+    --             min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+    --             line_numbers = true,
+    --             multiline_threshold = 20, -- Maximum number of lines to show for a single context
+    --             trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+    --             mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
+    --             -- Separator between context and content. Should be a single character string, like '-'.
+    --             -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+    --             separator = nil,
+    --             zindex = 20, -- The Z-index of the context window
+    --             on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+    --         }
+    --     end
+    -- }
     -- {
     -- 	"karb94/neoscroll.nvim",
     -- 	config = function()
